@@ -1,17 +1,20 @@
 package se.lexicon.course_manager_assignment.data.sequencers;
 
 public class CourseSequencer {
-    private static int courseSequencer;
+    private static int courseSequencer=0;
 
     public static int nextCourseId(){
+
         return ++courseSequencer;
     }
 
-    public static int getCourseSequencer() {
+    public static int getCourseSequencer()
+    {
         return courseSequencer;
     }
 
-    public static void setCourseSequencer(int courseSequencer) {
+    public static void setCourseSequencer(int courseSequencer)
+    {
         CourseSequencer.courseSequencer = courseSequencer;
     }
 }

@@ -1,7 +1,4 @@
 package se.lexicon.course_manager_assignment.data.dao;
-
-
-
 import se.lexicon.course_manager_assignment.model.Course;
 
 import java.time.LocalDate;
@@ -10,56 +7,90 @@ import java.util.HashSet;
 
 
 public class CourseCollectionRepository implements CourseDao{
-
     private Collection<Course> courses;
-
-
     public CourseCollectionRepository(Collection<Course> courses) {
         this.courses = courses;
     }
 
     @Override
     public Course createCourse(String courseName, LocalDate startDate, int weekDuration) {
-        return null;
+        Course newCourse = new Course(courseName, startDate, weekDuration);
+        return newCourse;
     }
 
     @Override
     public Course findById(int id) {
+        for (Course course : courses) {
+            if (course.getId() == id) {
+                return course;
+            }
+        }
         return null;
     }
 
     @Override
-    public Collection<Course> findByNameContains(String name) {
-        return null;
-    }
+    public Collection<Course> findByNameContains(String name)
+    {
+        Collection<Course> foundCourses = new HashSet<>();
 
+        for (Course course : courses) {
+            if (course.getCourseName().contains(name)) {
+                foundCourses.add(course);
+            }
+        }
+
+        return foundCourses;
+    }
     @Override
     public Collection<Course> findByDateBefore(LocalDate end) {
-        return null;
-    }
+        Collection<Course> foundCourses = new HashSet<>();
 
+        for (Course course : courses) {
+            if (course.getStartDate().isBefore(end)) {
+                foundCourses.add(course);
+            }
+        }
+
+        return foundCourses;
+    }
     @Override
     public Collection<Course> findByDateAfter(LocalDate start) {
-        return null;
+        Collection<Course> foundCourses = new HashSet<>();
+
+        for (Course course : courses) {
+            if (course.getStartDate().isAfter(start)) {
+                foundCourses.add(course);
+            }
+        }
+
+        return foundCourses;
+
     }
 
     @Override
     public Collection<Course> findAll() {
-        return null;
+        return courses;
     }
-
     @Override
     public Collection<Course> findByStudentId(int studentId) {
-        return null;
-    }
+        Collection<Course> foundCourses = new HashSet<>();
 
+        for (Course course : courses) {
+            if (course.hasStudent(studentId)) {
+                foundCourses.add(course);
+            }
+        }
+
+        return foundCourses;
+    }
     @Override
     public boolean removeCourse(Course course) {
-        return false;
+        return courses.remove(course);
     }
 
     @Override
     public void clear() {
         this.courses = new HashSet<>();
+        courses.clear();
     }
 }

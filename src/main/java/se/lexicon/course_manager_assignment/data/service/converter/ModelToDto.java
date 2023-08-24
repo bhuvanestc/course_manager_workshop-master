@@ -13,12 +13,19 @@ import java.util.List;
 @Component
 public class ModelToDto implements Converters {
     @Override
-    public StudentView studentToStudentView(Student student) {
-        return null;
+    public StudentView studentToStudentView(Student student)
+    {
+        StudentView studentView = new Student(int id, String name, String email, String address);
+        studentView.getId();
+        studentView.getName();
+        studentView.getAddress();
+        studentView.getEmail();
+        return studentView;
     }
 
     @Override
-    public CourseView courseToCourseView(Course course) {
+    public CourseView courseToCourseView(Course course)
+    {
         return null;
     }
 

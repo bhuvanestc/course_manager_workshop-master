@@ -1,4 +1,5 @@
 package se.lexicon.course_manager_assignment.data.service.course;
+import se.lexicon.course_manager_assignment.model.Course;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import se.lexicon.course_manager_assignment.dto.views.CourseView;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseManager implements CourseService {
@@ -29,56 +31,72 @@ public class CourseManager implements CourseService {
 
     @Override
     public CourseView create(CreateCourseForm form) {
-        return null;
+        return converters.courseToCourseView(courseDao.createCourse(form.getCourseName(), form.getStartDate(), form.getWeekDuration()));
     }
 
     @Override
     public CourseView update(UpdateCourseForm form) {
-        return null;
+        Course course = courseDao.findById(form.getId());
+        if (course == null) {
+            return null;
+        }
+
+        course.setCourseName(form.getCourseName());
+        course.setStartDate(form.getStartDate());
+        course.setWeekDuration(form.getWeekDuration());
+
+        return course.intoView();
     }
 
     @Override
     public List<CourseView> searchByCourseName(String courseName) {
-        return null;
+        return courseDao.findByNameContains(courseName).stream().map(converters::courseToCourseView).collect(Collectors.toList());
+
     }
 
     @Override
     public List<CourseView> searchByDateBefore(LocalDate end) {
-        return null;
+
+        return courseDao.findByDateBefore(end).stream().map(converters::courseToCourseView).collect(Collectors.toList());
     }
 
     @Override
     public List<CourseView> searchByDateAfter(LocalDate start) {
-        return null;
+
+        return courseDao.findByDateAfter(start).stream().map(converters::courseToCourseView).collect(Collectors.toList());
     }
 
     @Override
     public boolean addStudentToCourse(int courseId, int studentId) {
-        return false;
+
+        return courseDao.findById(courseId).enrollStudent(studentDao.findById(studentId));
     }
 
     @Override
     public boolean removeStudentFromCourse(int courseId, int studentId) {
-        return false;
+        return courseDao.findById(courseId).unenrollStudent(studentDao.findById(studentId));
     }
 
     @Override
     public CourseView findById(int id) {
-        return null;
+
+        return converters.courseToCourseView(courseDao.findById(id));
     }
 
     @Override
     public List<CourseView> findAll() {
-        return null;
+
+        return courseDao.findAll().stream().map(converters::courseToCourseView).collect(Collectors.toList());
     }
 
     @Override
     public List<CourseView> findByStudentId(int studentId) {
-        return null;
+
+        return courseDao.findByStudentId(studentId).stream().map(converters::courseToCourseView).collect(Collectors.toList());
     }
 
     @Override
     public boolean deleteCourse(int id) {
-        return false;
+        return courseDao.removeCourse(courseDao.findById(id));
     }
 }

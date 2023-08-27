@@ -8,6 +8,7 @@ import se.lexicon.course_manager_assignment.model.Student;
 
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.List;
 
 @Component
@@ -15,27 +16,30 @@ public class ModelToDto implements Converters {
     @Override
     public StudentView studentToStudentView(Student student)
     {
-        StudentView studentView = new Student(int id, String name, String email, String address);
-        studentView.getId();
-        studentView.getName();
-        studentView.getAddress();
-        studentView.getEmail();
-        return studentView;
+        if(student==null) {
+            return null;
+        }
+        return student.intoView();
+
     }
 
     @Override
     public CourseView courseToCourseView(Course course)
     {
-        return null;
+        if (course == null) {
+            return null;
+        }
+
+        return course.intoView();
     }
 
     @Override
     public List<CourseView> coursesToCourseViews(Collection<Course> courses) {
-        return null;
+        return courses.stream().map(Course::intoView).collect(Collectors.toList());
     }
 
     @Override
     public List<StudentView> studentsToStudentViews(Collection<Student> students) {
-        return null;
+        return students.stream().map(Student::intoView).collect(Collectors.toList());
     }
 }

@@ -4,6 +4,8 @@ import se.lexicon.course_manager_assignment.model.Course;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class CourseCollectionRepository implements CourseDao{
@@ -14,7 +16,8 @@ public class CourseCollectionRepository implements CourseDao{
 
     @Override
     public Course createCourse(String courseName, LocalDate startDate, int weekDuration) {
-        Course newCourse = new Course(courseName, startDate, weekDuration);
+        Course newCourse = new Course(courseName, startDate, weekDuration,new ArrayList<>());
+        this.courses.add(newCourse);
         return newCourse;
     }
 

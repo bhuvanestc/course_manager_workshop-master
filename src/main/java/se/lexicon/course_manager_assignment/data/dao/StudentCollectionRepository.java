@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 
+
+
 public class StudentCollectionRepository implements StudentDao {
 
     private Collection<Student> students;
@@ -17,6 +19,7 @@ public class StudentCollectionRepository implements StudentDao {
     public Student createStudent(String name, String email, String address) {
 
         Student newStudent = new Student(name, email, address);
+        this.students.add(newStudent);
         return newStudent;
     }
 
@@ -63,7 +66,7 @@ public class StudentCollectionRepository implements StudentDao {
     @Override
     public Collection<Student> findAll()
     {
-        return students;
+        return this.students;
     }
 
     @Override
